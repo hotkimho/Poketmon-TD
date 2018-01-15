@@ -31,14 +31,13 @@ def draw_object(obj,x,y):
 
 
 def run_game():
-    global enemy_print
-    enemy_x = 10
-    enemy_y = 10
-    move_count = 0
-    x = 0
-    y = 0
-    enemy_print = enemy_unit.class_enemy(image.enemy1)
+    enemy_array = [];
+    i = 0
+    for i in range(0,10):
+        enemy_array.append(enemy_unit.class_enemy(image.enemy1,i*space_y,i))
 
+
+    index = 0
     crashed = False
     game_map = make_map()
     while not crashed:
@@ -54,19 +53,13 @@ def run_game():
                 else:
                     draw_object(image.tile1, j * space_x, i * space_y)
 
-        '''
-        if enemy_move[move_count][0] == 0:
-            if enemy_move[move_count][1] == y:
-                move_count += 1
-            else:
-                y += 1
-                for i in range(space_y):
-                    enemy_y += 1
-                    draw_object(image.enemy1, enemy_x, enemy_y)
-                    pygame.display.update()
-                    '''
-       # enemy_print.enemy_move(space_x,space_y)
+        for i in range(index):
+            enemy_array[i].wave(space_x,space_y, i)
+        if index < 10:
+            index += 1
 
+        clock = pygame.time.Clock()
+        clock.tick(70)
         pygame.display.update()
         if crashed:
             pygame.quit()
@@ -74,13 +67,11 @@ def run_game():
 
 def init_game():
     #게임 판
-    global gamepad
-
-
+    global gamepad, clock
     pygame.init()
     gamepad = pygame.display.set_mode((width, height))
     pygame.display.set_caption("포켓몬 랜덤 디펜스")
-    #clock = pygame.time.Clock()
+    clock = pygame.time.Clock()
 
 
 
